@@ -1,3 +1,5 @@
+/*Special Clock
+Created By Newbie-coder91 Aka Atul Agrawal*/
 #include <conio.h>
 #include <stdio.h>
 #include <graphics.h>
