@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cursed Clock</title>
+    <style>
+        body {
+            background: whitesmoke;
+            color: #000;
+            text-align: center;
+        }
+
+        canvas {
+            display: block;
+            margin: auto;
+            background: whitesmoke;
+            color: #000;
+        }
+
+        .top-clock {
+            height: 128px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            font-size: 3.0rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #h,
+        #m,
+        #s {
+            width: 64px;
+        }
+
+        #colon {
+            width: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-clock">
+        <p id="h"></p>
+        <p id="colon">:</p>
+        <p id="m"></p>
+        <p id="colon">:</p>
+        <p id="s"></p>
+    </div>
+    <canvas id="clock" width="900" height="900"></canvas>
+
+    <script>
+        setInterval(() => {
+            let date = new Date()
+            document.getElementById('h').innerHTML = date.getHours()
+            document.getElementById('m').innerHTML = date.getMinutes()
+            document.getElementById('s').innerHTML = date.getSeconds()
+        }, 1000);
+    </script>
+
+    <script>
+        const canvas = document.getElementById("clock");
+        const ctx = canvas.getContext("2d");
+
+        const PI = Math.PI;
+        const step = (2 * PI) / 60;      // second/minute step
+        const hour_step = (2 * PI) / 12; // hour step
+
+        // initial time
+        let now = new Date();
+        let sec = now.getSeconds();
+        let min = now.getMinutes();
+        let hour = now.getHours();
+        if (hour > 12) hour -= 12;
+
+        let sec_angle = -PI / 2 + sec * step;
+        let min_angle = -PI / 2 + min * step;
+        let hour_angle = -PI / 2 + hour * hour_step;
+
+        function drawClock() {
+            // clear screen
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "black";
+            ctx.strokeStyle = "black";
+            ctx.font = "20px monospace";
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 - 50;
+            const frameSize = 570; // bigger square frame
+
+            /* // Title
+            ctx.fillText("Cursed Clock", centerX - 70, centerY - frameSize / 2 - 40);
+
+            //Square frame
+            ctx.beginPath();
+            ctx.rect(centerX - frameSize / 2, centerY - frameSize / 2,
+                frameSize, frameSize);
+            ctx.stroke();
+            */
+
+            // Center dot
+            ctx.beginPath();
+            ctx.arc(centerX + 11, centerY - 7, 7, 0, 2 * PI);
+            ctx.fill();
+
+            // Draw numbers in weird style
+            let sec_r = 35, min_r = 35, hour_r = 35;
+            for (let i = 1; i <= 7; i++) { // increased range by +1
+                // seconds
+                let sec_x = centerX + sec_r * Math.cos(sec_angle);
+                let sec_y = centerY + sec_r * Math.sin(sec_angle);
+                ctx.fillText(sec.toString(), sec_x, sec_y);
+                sec_r += 35;
+
+                // minutes
+                if (i > 1) {
+                    let min_x = centerX + min_r * Math.cos(min_angle);
+                    let min_y = centerY + min_r * Math.sin(min_angle);
+                    ctx.fillText(min.toString(), min_x, min_y);
+                    min_r += 35;
+                }
+
+                // hours
+                if (i > 2) {
+                    let hour_x = centerX + hour_r * Math.cos(hour_angle);
+                    let hour_y = centerY + hour_r * Math.sin(hour_angle);
+                    ctx.fillText(hour.toString(), hour_x, hour_y);
+                    hour_r += 35;
+                }
+            }
+
+            // === update time (same cursed logic) ===
+            sec++;
+            sec_angle += step;
+
+            if (sec === 60) {
+                sec = 1;
+                min++;
+                min_angle += step;
+            }
+            if (sec_angle < -2 * PI) sec_angle += 2 * PI;
+
+            if (min === 60) {
+                min = 1;
+                hour++;
+                hour_angle += hour_step;
+            }
+            if (min_angle < -2 * PI) min_angle += 2 * PI;
+
+            if (hour === 13) hour = 1;
+            if (hour_angle < -2 * PI) hour_angle += 2 * PI;
+        }
+
+        // run every second
+        setInterval(drawClock, 1000);
+
+        // draw first frame
+        drawClock();
+    </script>
+</body>
+
+</html>

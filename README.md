@@ -9,7 +9,7 @@ It is a Special Clock which Works on Real World Time. Don't consider it a normal
 - Use Turbo C++ compiler to Run this Program.
 
 ## Preview
-
+![CLOCK IMAGE](sneakpeak.png)
 
 
 ## Technology Used
