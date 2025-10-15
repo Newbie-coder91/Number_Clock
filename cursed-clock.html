@@ -16,48 +16,11 @@
             background: whitesmoke;
             color: #000;
         }
-
-        .top-clock {
-            height: 128px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-            font-size: 3.0rem;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        #h,
-        #m,
-        #s {
-            width: 64px;
-        }
-
-        #colon {
-            width: 24px;
-        }
     </style>
 </head>
 
 <body>
-    <div class="top-clock">
-        <p id="h"></p>
-        <p id="colon">:</p>
-        <p id="m"></p>
-        <p id="colon">:</p>
-        <p id="s"></p>
-    </div>
     <canvas id="clock" width="900" height="900"></canvas>
-
-    <script>
-        setInterval(() => {
-            let date = new Date()
-            document.getElementById('h').innerHTML = date.getHours()
-            document.getElementById('m').innerHTML = date.getMinutes()
-            document.getElementById('s').innerHTML = date.getSeconds()
-        }, 1000);
-    </script>
-
     <script>
         const canvas = document.getElementById("clock");
         const ctx = canvas.getContext("2d");
